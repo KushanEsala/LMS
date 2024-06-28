@@ -153,7 +153,15 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-3"></div>
+		<div class="col-md-3" style="margin: 0px">
+			<div class="card bg-light" style="width: 300px">
+				<div class="card-header"><b>Book Requests</b></div>
+				<div class="card-body">
+					<p class="card-text">No of requests : <?php echo get_request_count();?></p>
+					<a class="btn btn-danger" href="view_book_request.php">View Requests</a>
+				</div>
+			</div>
+		</div>
 		<div class="col-md-3"></div>
 	</div>
 </body>
