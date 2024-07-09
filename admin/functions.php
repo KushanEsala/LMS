@@ -83,4 +83,26 @@
 		}
 		return($staff_count);
 	}
+	function get_request_count(){
+		$connection = mysqli_connect("localhost","root","");
+		$db = mysqli_select_db($connection,"lms");
+		$staff_count = 0;
+		$query = "select count(*) as request_count from request_book";
+		$query_run = mysqli_query($connection,$query);
+		while ($row = mysqli_fetch_assoc($query_run)){
+			$staff_count = $row['request_count'];
+		}
+		return($staff_count);
+	}
+	function acceptRequest($request_id) {
+        global $connection;
+        $query = "UPDATE request_book SET status='Accepted' WHERE rb_id='$request_id'";
+        mysqli_query($connection, $query);
+    }
+
+    function declineRequest($request_id) {
+        global $connection;
+        $query = "UPDATE request_book SET status='Declined' WHERE rb_id='$request_id'";
+        mysqli_query($connection, $query);
+    }
 ?>

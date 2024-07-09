@@ -11,7 +11,7 @@
   	<script type="text/javascript" src="../bootstrap-4.4.1/js/bootstrap.min.js"></script>
   	<script type="text/javascript">
   		function alertMsg(){
-  			alert(Book added successfully...);
+  			alert("Book added successfully...");
   			window.location.href = "admin_dashboard.php";
   		}
   	</script>
