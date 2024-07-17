@@ -44,7 +44,7 @@
 			<form action="update_password.php" method="post"> 
 			<input type="text" class="form-control" name="adminEmail" id="adminEmail" value="<?php echo $_SESSION['email']; ?>" hidden>
 					<div class="form-group">
-						<label for="password"><b>Enter Password:</b></label>
+						<label for="password"><b>Enter Old Password:</b></label>
 						<input type="password" class="form-control" name="old_password">
 					</div>
 					<div class="form-group">

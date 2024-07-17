@@ -15,8 +15,7 @@
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
 			<div class="navbar-header">
-			<img src="img.jpg" alt="Default Profile" style="width: 40px; height: 40px; border-radius: 50%;">
-				<a class="navbar-brand" href="admin_dashboard.php"style=color:yellow;>Library Management System (LMS)</style></a>
+			<a class="navbar-brand" href="admin_dashboard.php"style=color:yellow;>Library Management System (LMS)</style></a>
 			</div>
 			<font style="color: white"><span><strong>Welcome: <?php echo $_SESSION['name'];?></strong></span></font>
 			<font style="color: white"><span><strong>Email: <?php echo $_SESSION['email'];?></strong></font>
@@ -153,7 +152,15 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-3"></div>
+		<div class="col-md-3" style="margin: 0px">
+			<div class="card bg-light" style="width: 300px">
+				<div class="card-header"><b>Book Requests</b></div>
+				<div class="card-body">
+					<p class="card-text">No of requests : <?php echo get_request_count();?></p>
+					<a class="btn btn-success" href="view_book_request.php">View Requests</a>
+				</div>
+			</div>
+		</div>
 		<div class="col-md-3"></div>
 	</div>
 </body>

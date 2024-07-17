@@ -103,7 +103,7 @@
 		</div>
 	</nav><br>
 	<span><marquee><b>Library Management System | Brought to you by <span style="color: red;">Tech Alliance</span>.</b></marquee></span><br><br>
-	<center><h4 style="color: blue;"><u>Manage Books</u></h4><br></center>
+	<center><h4 style="color: blue;"><b>Manage Books</b></h4><br></center>
 	<div class="row">
 		<div class="col-md-2"></div>
 		<div class="col-md-12">
@@ -123,14 +123,14 @@
 				<?php
 					$connection = mysqli_connect("localhost", "root", "");
 					$db = mysqli_select_db($connection, "lms");
-					$query = "SELECT * FROM books";
+					$query = "SELECT books.*, category.cat_name FROM books JOIN category ON books.cat_id = category.cat_id";
 					$query_run = mysqli_query($connection, $query);
 					while ($row = mysqli_fetch_assoc($query_run)) {
 				?>
 					<tr>
 						<td><?php echo $row['book_name']; ?></td>
 						<td><?php echo $row['author_name']; ?></td>
-						<td><?php echo $row['cat_id']; ?></td>
+						<td><?php echo $row['cat_name']; ?></td>
 						<td><?php echo $row['isbn_no']; ?></td>
 						<td><?php echo $row['book_price']; ?></td>
 						<td><?php echo $row['book_quantity']; ?></td>

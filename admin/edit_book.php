@@ -14,7 +14,7 @@
 		$book_name = $row['book_name'];
 		$isbn_no = $row['isbn_no'];
 		$author_name = $row['author_name'];
-		$cat_id = $row['cat_id'];
+		$cat_name = $row['cat_name'];
 		$book_price = $row['book_price'];
 		$book_quantity = $row['book_quantity'];
 		$book_availability = $row['book_availability'];
@@ -73,8 +73,8 @@
 					<input type="text" name="author_name" value="<?php echo $author_name; ?>" class="form-control" required>
 				</div>
 				<div class="form-group">
-					<label for="cat_id"><b>Category ID:</b></label>
-					<input type="text" name="cat_id" value="<?php echo $cat_id; ?>" class="form-control" required>
+					<label for="cat_name"><b>Category Name:</b></label>
+					<input type="text" name="cat_name" value="<?php echo $cat_name; ?>" class="form-control" required>
 				</div>
 				<div class="form-group">
 					<label for="book_price"><b>Book Price:</b></label>
