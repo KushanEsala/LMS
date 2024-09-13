@@ -1,15 +1,15 @@
 <?php
 	require("functions.php");
 	session_start();
-	#fetch data from database
-	$connection = mysqli_connect("localhost","root","");
-	$db = mysqli_select_db($connection,"lms");
+	// Fetch data from database
+	$connection = mysqli_connect("localhost", "root", "");
+	$db = mysqli_select_db($connection, "lms");
 	$name = "";
 	$email = "";
 	$mobile = "";
-	$query = "select * from super_admin where email = '$_SESSION[email]'";
-	$query_run = mysqli_query($connection,$query);
-	while ($row = mysqli_fetch_assoc($query_run)){
+	$query = "SELECT * FROM super_admin WHERE email = '$_SESSION[email]'";
+	$query_run = mysqli_query($connection, $query);
+	while ($row = mysqli_fetch_assoc($query_run)) {
 		$name = $row['name'];
 		$email = $row['email'];
 		$mobile = $row['mobile'];
@@ -24,20 +24,62 @@
   	<script type="text/javascript" src="../bootstrap-4.4.1/js/juqery_latest.js"></script>
   	<script type="text/javascript" src="../bootstrap-4.4.1/js/bootstrap.min.js"></script>
   	<script type="text/javascript">
-  		function alertMsg(){
-  			alert(Book added successfully...);
-  			window.location.href = "super_admin_dashboard.php";
+  		function alertMsg() {
+  			alert("Book added successfully...");
+  			window.location.href = "uper_admin_dashboard.php";
   		}
   	</script>
+  	<style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			background-color: #f8f9fa;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+			overflow: hidden;
+		}
+		th {
+			background-color: #6c757d;
+			color: white;
+			font-weight: bold;
+			padding: 10px;
+			text-align: left;
+			border-bottom: 2px solid #dee2e6;
+		}
+		td {
+			padding: 10px;
+			border-bottom: 1px solid #dee2e6;
+		}
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+		tr:hover {
+			background-color: #e9ecef;
+		}
+		thead {
+			background-color: #5d78ff;
+			color: white;
+		}
+		td a {
+			text-decoration: none;
+			color: white;
+		}
+		.btn-warning a {
+			color: black;
+		}
+		thead th {
+			background-color: #4a73ff;
+		}
+	</style>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="super_admin_dashboard.php"style=color:yellow;>Library Management System (LMS)</style></a>
+			<a class="navbar-brand" href="super_admin_dashboard.php"style=color:yellow;>Library Management System (LMS)</style></a>
 			</div>
-			<font style="color: white"><span><strong>Welcome: <?php echo $_SESSION['name'];?></strong></span></font>
-			<font style="color: white"><span><strong>Email: <?php echo $_SESSION['email'];?></strong></font>
+			<font style="color: white;"><span><strong>Welcome: <?php echo $_SESSION['name']; ?></strong></span></font>
+			<font style="color: white;"><span><strong>Email: <?php echo $_SESSION['email']; ?></strong></font>
 		    <ul class="nav navbar-nav navbar-right">
 		      <li class="nav-item dropdown">
 	        	<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>My Profile</b></a>
@@ -50,20 +92,19 @@
 	        	</div>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="../logout.php"style=color:red;><b>Logout</b></style></a>
+		        <a class="nav-link" href="../logout.php" style="color: red;"><b>Logout</b></a>
 		      </li>
 		    </ul>
 		</div>
 	</nav><br>
 	<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd">
 		<div class="container-fluid">
-			
 		    <ul class="nav navbar-nav navbar-center">
 		      <li class="nav-item">
 		        <a class="nav-link" href="super_admin_dashboard.php"><b>Dashboard</b></a>
 		      </li>
 		      <li class="nav-item dropdown">
-	        	<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>Books</b> </a>
+	        	<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>Books</b></a>
 	        	<div class="dropdown-menu">
 	        		<a class="dropdown-item" href="add_book.php"><b>Add New Book</b></a>
 	        		<div class="dropdown-divider"></div>
@@ -71,7 +112,7 @@
 	        	</div>
 		      </li>
 		      <li class="nav-item dropdown">
-	        	<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>Category</b> </a>
+	        	<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>Category</b></a>
 	        	<div class="dropdown-menu">
 	        		<a class="dropdown-item" href="add_cat.php"><b>Add New Category</b></a>
 	        		<div class="dropdown-divider"></div>
@@ -86,6 +127,14 @@
 	        		<a class="dropdown-item" href="manage_author.php"><b>Manage Author</b></a>
 	        	</div>
 		      </li>
+			  <li class="nav-item dropdown">
+	        	<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>Staff</b></a>
+	        	<div class="dropdown-menu">
+	        		<a class="dropdown-item" href="add_staff.php"><b>Add New Member</b></a>
+	        		<div class="dropdown-divider"></div>
+	        		<a class="dropdown-item" href="manage_staff.php"><b>Manage Members</b></a>
+	        	</div>
+		      </li>
 	          <li class="nav-item">
 		        <a class="nav-link" href="issue_book.php"><b>Issue Book</b></a>
 		      </li>
@@ -95,48 +144,50 @@
 		    </ul>
 		</div>
 	</nav><br>
-	<span><marquee><b>Library Management System|Brought to you by <span style=color:red;>Tech Alliance</style>.</b></marquee></span><br><br>
-		<center><h4 style=color:blue;><u>Manage Books</u></style></h4><br></center>
-		<div class="row">
-			<div class="col-md-2"></div>
-			<div class="col-md-12">
-				<table class="table table-bordered table-hover">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Author ID</th>
-							<th>Category</th>
-							<th>ISBN No.</th>
-							<th>Price</th>
-							<th>Book Quantity</th>
-							<th>Book Availability</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<?php
-						$connection = mysqli_connect("localhost","root","");
-						$db = mysqli_select_db($connection,"lms");
-						$query = "select * from books";
-						$query_run = mysqli_query($connection,$query);
-						while ($row = mysqli_fetch_assoc($query_run)){
-							?>
-							<tr>
-								<td><?php echo $row['book_name'];?></td>
-								<td><?php echo $row['author_id'];?></td>
-								<td><?php echo $row['cat_id'];?></td>
-								<td><?php echo $row['isbn_no'];?></td>
-								<td><?php echo $row['book_price'];?></td>
-								<td><?php echo $row['book_quantity'];?></td>
-								<td><?php echo $row['book_availability'];?></td>
-								<td><button class="btn btn-warning" name=""><a href="edit_book.php?bn=<?php echo $row['isbn_no'];?>"style=color:black;>Edit</a></button>
-								<button class="btn btn-danger"><a href="delete_book.php?bn=<?php echo $row['isbn_no'];?>"style=color:white;>Delete</a></button></td>
-							</tr>
-							<?php
-						}
-					?>
-				</table>
-			</div>
-			<div class="col-md-2"></div>
+	<span><marquee><b>Library Management System | Brought to you by <span style="color: red;">Tech Alliance</span>.</b></marquee></span><br><br>
+	<center><h4 style="color: blue;"><b>Manage Books</b></h4><br></center>
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-12">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Author Name</th>
+						<th>Category</th>
+						<th>ISBN No.</th>
+						<th>Price</th>
+						<th>Book Quantity</th>
+						<th>Book Availability</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<?php
+					$connection = mysqli_connect("localhost", "root", "");
+					$db = mysqli_select_db($connection, "lms");
+					$query = "SELECT books.*, category.cat_name FROM books JOIN category ON books.cat_name = category.cat_name";
+					$query_run = mysqli_query($connection, $query);
+					while ($row = mysqli_fetch_assoc($query_run)) {
+				?>
+					<tr>
+						<td><?php echo $row['book_name']; ?></td>
+						<td><?php echo $row['author_name']; ?></td>
+						<td><?php echo $row['cat_name']; ?></td>
+						<td><?php echo $row['isbn_no']; ?></td>
+						<td><?php echo $row['book_price']; ?></td>
+						<td><?php echo $row['book_quantity']; ?></td>
+						<td><?php echo $row['book_availability']; ?></td>
+						<td>
+							<button class="btn btn-warning"><a href="edit_book.php?bn=<?php echo $row['isbn_no']; ?>" style="color: black;">Edit</a></button>
+							<button class="btn btn-danger"><a href="delete_book.php?bn=<?php echo $row['isbn_no']; ?>" style="color: white;">Delete</a></button>
+						</td>
+					</tr>
+				<?php
+					}
+				?>
+			</table>
 		</div>
+		<div class="col-md-2"></div>
+	</div>
 </body>
 </html>
