@@ -37,12 +37,15 @@ if (in_array($photo_actual_ext, $allowed)) {
     exit();
 }
 
+// Hash the password
+$hashed_password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
 // Prepare INSERT statement
 $query = "INSERT INTO users (name, email, password, mobile, address, photo, reg_date, role) VALUES (?, ?, ?, ?, ?, ?, ?, 'user')";
 $stmt = mysqli_prepare($connection, $query);
 
 // Bind parameters
-mysqli_stmt_bind_param($stmt, "sssisss", $_POST['name'], $_POST['email'], $_POST['password'], $_POST['mobile'], $_POST['address'], $photo_destination, $_POST['reg_date']);
+mysqli_stmt_bind_param($stmt, "sssssss", $_POST['name'], $_POST['email'], $hashed_password, $_POST['mobile'], $_POST['address'], $photo_destination, $_POST['reg_date']);
 
 // Execute statement
 $success = mysqli_stmt_execute($stmt);

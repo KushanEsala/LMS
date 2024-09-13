@@ -1,79 +1,138 @@
 <?php
-	session_start();
-?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>LMS</title>
-	<meta charset="utf-8" name="viewport" content="width=device-width,intial-scale=1">
-	<link rel="stylesheet" type="text/css" href="bootstrap-4.4.1/css/bootstrap.min.css">
-  	<script type="text/javascript" src="bootstrap-4.4.1/js/juqery_latest.js"></script>
-  	<script type="text/javascript" src="bootstrap-4.4.1/js/bootstrap.min.js"></script>
-</head>
-<style type="text/css">
-	#main_content{
-		padding: 50px;
-		background-color: whitesmoke;
-	}
-	#side_bar{
-		background-color: whitesmoke;
-		padding: 50px;
-		width: 300px;
-		height: 450px;
-	}
-</style>
-<body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="index.php"style=color:yellow;>Library Management System (LMS)</style></a>
-			</div>
-	</nav>
-	<br>
-	<span><marquee><b>Library Management System|Brought to you by <span style=color:red;>Tech Alliance</style>.</b></marquee></span><br><br>
-     <!-- Similar structure as your other HTML/Bootstrap content -->
-<!-- Add a form for password reset -->
-<form action="" method="post">
-    <div class="form-group">
-        <label for="email"><b>Email Address</Address>:</b></label>
-        <input type="text" name="email" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label for="password"><b>New Password:</b></label>
-        <input type="password" name="new_password" class="form-control" required>
-    </div>
-    <button type="submit" name="update_password" class="btn btn-primary">Update Password</button>
-</form>
+require 'vendor/autoload.php';
+require 'send_otp.php'; // Include the send_otp.php file
 
-<!-- forgot_password.php -->
-<!-- ... (your form structure) -->
+session_start();
 
-<?php
-if(isset($_POST['update_password'])){
-    $connection = mysqli_connect("localhost","root","");
-    $db = mysqli_select_db($connection,"lms");
+$connection = mysqli_connect("localhost", "root", "", "lms");
+
+if (isset($_POST['send_otp'])) {
     $email = $_POST['email'];
-    $new_password = $_POST['new_password'];
-
-    // Check if the email exists in the database
     $query = "SELECT * FROM users WHERE email = '$email'";
-    $query_run = mysqli_query($connection,$query);
+    $query_run = mysqli_query($connection, $query);
 
-    if(mysqli_num_rows($query_run) > 0){
-        // Update the password for the given email
-        $update_query = "UPDATE users SET password = '$new_password' WHERE email = '$email'";
-        $update_query_run = mysqli_query($connection,$update_query);
+    if (mysqli_num_rows($query_run) > 0) {
+        // Generate OTP
+        $otp = rand(100000, 999999);
+        $_SESSION['otp'] = $otp;
+        $_SESSION['email'] = $email;
 
-        if($update_query_run){
-            echo '<br><br><center>Password updated successfully!</center>';
+        // Send OTP
+        if (sendOTP($email, $otp)) {
+            echo '<center><div class="alert alert-success">OTP sent to your email!</div></center>';
         } else {
-            echo '<br><br><center>Failed to update password!</center>';
+            echo '<center><div class="alert alert-danger">Failed to send OTP!</div></center>';
         }
     } else {
-        echo '<br><br><center>Email does not exist!</center>';
+        echo '<center><div class="alert alert-danger">Email does not exist!</div></center>';
+    }
+}
+
+if (isset($_POST['verify_otp'])) {
+    $enteredOtp = $_POST['otp'];
+    $email = $_SESSION['email'];
+
+    if ($enteredOtp == $_SESSION['otp']) {
+        echo '<center><div class="alert alert-success">OTP verified! You can now reset your password.</div></center>';
+        // Redirect to the password reset form
+        header("Location: reset_password.php");
+    } else {
+        echo '<center><div class="alert alert-danger">Invalid OTP!</div></center>';
     }
 }
 ?>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forgot Password</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="bootstrap-4.4.1/css/bootstrap.min.css">
+    <script type="text/javascript" src="bootstrap-4.4.1/js/jquery_latest.js"></script>
+    <script type="text/javascript" src="bootstrap-4.4.1/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #f4f7f6;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 500px;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 30px;
+        }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background-color: #007bff;
+            border: none;
+            padding: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .alert {
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php" style="color:yellow;">Library Management System (LMS)</a>
+        </div>
+    </nav>
+    <br>
+    <div class="container">
+        <h2>Forgot Password</h2>
+        <form action="" method="post">
+            <div class="form-group">
+                <label for="email"><b>Email Address:</b></label>
+                <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            <button type="submit" name="send_otp" class="btn btn-primary">Send OTP</button>
+        </form>
+
+        <br>
+
+        <form action="" method="post">
+            <div class="form-group">
+                <label for="otp"><b>Enter OTP:</b></label>
+                <input type="text" name="otp" class="form-control" placeholder="Enter the OTP" required>
+            </div>
+            <button type="submit" name="verify_otp" class="btn btn-primary">Verify OTP</button>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('form').on('submit', function() {
+                // Optional: You can add a loading spinner or disable the button while processing
+                $(this).find('button').attr('disabled', true).text('Processing...');
+            });
+        });
+    </script>
 </body>
 </html>

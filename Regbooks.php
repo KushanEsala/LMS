@@ -31,6 +31,49 @@
 .available {
     color: green;
 }
+<style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			background-color: #f8f9fa;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+			overflow: hidden;
+		}
+		th {
+			background-color: #6c757d;
+			color: white;
+			font-weight: bold;
+			padding: 10px;
+			text-align: left;
+			border-bottom: 2px solid #dee2e6;
+		}
+		td {
+			padding: 10px;
+			border-bottom: 1px solid #dee2e6;
+		}
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+		tr:hover {
+			background-color: #e9ecef;
+		}
+		thead {
+			background-color: #5d78ff;
+			color: white;
+		}
+		td a {
+			text-decoration: none;
+			color: white;
+		}
+		.btn-warning a {
+			color: black;
+		}
+		thead th {
+			background-color: #4a73ff;
+		}
+	</style>
+
 </style>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -96,7 +139,6 @@ if(isset($_GET['search']) && !empty($_GET['search'])) {
     }
 ?>
 	<br>
-	<span><marquee><b>Library Management System | Brought to you by <span style="color:red;">Tech Alliance</span>.</b></marquee></span><br><br>
 	<center><h4 style="color:blue;"><b>Registered Book's Details</b></h4><br></center>
 	<div class="row">
 		<div class="col-md-2"></div>

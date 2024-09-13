@@ -96,7 +96,6 @@ if(!empty($user_photo)) {
 		    </ul>
 		</div>
 	</nav><br>
-	<span><marquee><b>Library Management System | Brought to you by <span style="color:red;">Tech Alliance</span>.</b></marquee></span><br><br>
 	<div class="row">
 		<div class="col-md-3" style="margin: 0px">
 			<div class="card bg-light" style="width: 300px">
