@@ -19,7 +19,7 @@
 <html>
 <head>
 	<title>Manage Book</title>
-	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8" name="viewport" content="width=device-width,intial-scale=1">
 	<link rel="stylesheet" type="text/css" href="../bootstrap-4.4.1/css/bootstrap.min.css">
   	<script type="text/javascript" src="../bootstrap-4.4.1/js/juqery_latest.js"></script>
   	<script type="text/javascript" src="../bootstrap-4.4.1/js/bootstrap.min.js"></script>
@@ -29,6 +29,48 @@
   			window.location.href = "admin_dashboard.php";
   		}
   	</script>
+  	<style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			background-color: #f8f9fa;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+			overflow: hidden;
+		}
+		th {
+			background-color: #6c757d;
+			color: white;
+			font-weight: bold;
+			padding: 10px;
+			text-align: left;
+			border-bottom: 2px solid #dee2e6;
+		}
+		td {
+			padding: 10px;
+			border-bottom: 1px solid #dee2e6;
+		}
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+		tr:hover {
+			background-color: #e9ecef;
+		}
+		thead {
+			background-color: #5d78ff;
+			color: white;
+		}
+		td a {
+			text-decoration: none;
+			color: white;
+		}
+		.btn-warning a {
+			color: black;
+		}
+		thead th {
+			background-color: #4a73ff;
+		}
+	</style>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -102,8 +144,7 @@
 		    </ul>
 		</div>
 	</nav><br>
-	<span><marquee><b>Library Management System | Brought to you by <span style="color: red;">Tech Alliance</span>.</b></marquee></span><br><br>
-	<center><h4 style="color: blue;"><u>Manage Books</u></h4><br></center>
+	<center><h4 style="color: blue;"><b>Manage Books</b></h4><br></center>
 	<div class="row">
 		<div class="col-md-2"></div>
 		<div class="col-md-12">
@@ -123,14 +164,14 @@
 				<?php
 					$connection = mysqli_connect("localhost", "root", "");
 					$db = mysqli_select_db($connection, "lms");
-					$query = "SELECT * FROM books";
+					$query = "SELECT books.*, category.cat_name FROM books JOIN category ON books.cat_id = category.cat_id";
 					$query_run = mysqli_query($connection, $query);
 					while ($row = mysqli_fetch_assoc($query_run)) {
 				?>
 					<tr>
 						<td><?php echo $row['book_name']; ?></td>
 						<td><?php echo $row['author_name']; ?></td>
-						<td><?php echo $row['cat_id']; ?></td>
+						<td><?php echo $row['cat_name']; ?></td>
 						<td><?php echo $row['isbn_no']; ?></td>
 						<td><?php echo $row['book_price']; ?></td>
 						<td><?php echo $row['book_quantity']; ?></td>

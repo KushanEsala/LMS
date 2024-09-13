@@ -1,4 +1,3 @@
-
 <?php
 	function get_author_count(){
 		$connection = mysqli_connect("localhost","root","");
@@ -94,15 +93,43 @@
 		}
 		return($staff_count);
 	}
+	
 	function acceptRequest($request_id) {
-        global $connection;
-        $query = "UPDATE request_book SET status='Accepted' WHERE rb_id='$request_id'";
-        mysqli_query($connection, $query);
-    }
+		$connection = mysqli_connect("localhost", "root", "", "lms");
+		
+		// Get the book request details
+		$query = "SELECT * FROM request_book WHERE rb_id = '$request_id'";
+		$result = mysqli_query($connection, $query);
+		$row = mysqli_fetch_assoc($result);
+		
+		$book_name = $row['book_name'];
+		$user_id = $row['user_id'];
+		$issue_date = date("Y-m-d"); // Set current date as the issue date
+		
+		// Fetch ISBN number and author from the books table using the book name
+		$book_query = "SELECT isbn_no, author_name FROM books WHERE book_name = '$book_name'";
+		$book_result = mysqli_query($connection, $book_query);
+		$book_row = mysqli_fetch_assoc($book_result);
+		$isbn_no = $book_row['isbn_no'];
+		$author = $book_row['author_name'];
+		
+		// Insert the issued book into issued_books table
+		$insert_query = "INSERT INTO issued_books (isbn_no, book_name, book_author, user_id, status, issue_date)
+						 VALUES ('$isbn_no', '$book_name', '$author', '$user_id', 1, '$issue_date')";
+		mysqli_query($connection, $insert_query);
+		
+		// Update the request_book status to 'Accepted'
+		$update_query = "UPDATE request_book SET status = 'Accepted' WHERE rb_id = '$request_id'";
+		mysqli_query($connection, $update_query);
+		
+		mysqli_close($connection);
+	}
 
-    function declineRequest($request_id) {
-        global $connection;
-        $query = "UPDATE request_book SET status='Declined' WHERE rb_id='$request_id'";
-        mysqli_query($connection, $query);
-    }
+	function declineRequest($request_id) {
+		$connection = mysqli_connect("localhost", "root", "", "lms");
+		$query = "UPDATE request_book SET status = 'Declined' WHERE rb_id = '$request_id'";
+		mysqli_query($connection, $query);
+		mysqli_close($connection);
+	}
+	
 ?>

@@ -43,7 +43,7 @@ if (isset($_GET['bn'])) {
     <!-- Your navigation bar -->
     <!-- ... -->
 
-    <center><h4 style="color: blue;"><u>Edit Staff Members</u></h4><br></center>
+    <center><h4 style="color: blue;"><b>Edit Staff Members</b></h4><br></center>
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">

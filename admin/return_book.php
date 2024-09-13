@@ -7,149 +7,92 @@
 	<title>Return Book</title>
 	<meta charset="utf-8" name="viewport" content="width=device-width,intial-scale=1">
 	<link rel="stylesheet" type="text/css" href="../bootstrap-4.4.1/css/bootstrap.min.css">
-  	<script type="text/javascript" src="../bootstrap-4.4.1/js/juqery_latest.js"></script>
+  	<script type="text/javascript" src="../bootstrap-4.4.1/js/jquery_latest.js"></script>
   	<script type="text/javascript" src="../bootstrap-4.4.1/js/bootstrap.min.js"></script>
-  	<script type="text/javascript">
-  		function alertMsg(){
-  			alert(Successfully Returned...);
-  			window.location.href = "admin_dashboard.php";
-  		}
-  	</script>
+
+	<script type="text/javascript">
+		// Function to fetch book details when book name is entered
+		function getBookDetails() {
+			var bookName = document.getElementById('book_name').value;
+			if (bookName !== "") {
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', 'fetch_book_details.php', true);
+				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState == 4 && xhr.status == 200) {
+						var data = JSON.parse(xhr.responseText);
+						if (data.success) {
+							document.getElementById('isbn_no').value = data.isbn_no;
+							document.getElementById('book_author').value = data.author_name;
+						} else {
+							alert("Book details not found!");
+						}
+					}
+				};
+				xhr.send('book_name=' + bookName);
+			}
+		}
+	</script>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="admin_dashboard.php"style=color:yellow;>Library Management System (LMS)</style></a>
-			</div>
-			<font style="color: white"><span><strong>Welcome: <?php echo $_SESSION['name'];?></strong></span></font>
-			<font style="color: white"><span><strong>Email: <?php echo $_SESSION['email'];?></strong></font>
-		    <ul class="nav navbar-nav navbar-right">
-		      <li class="nav-item dropdown">
-	        	<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>My Profile</b></a>
-	        	<div class="dropdown-menu">
-	        		<a class="dropdown-item" href="view_profile.php"><b>View Profile</b></a>
-	        		<div class="dropdown-divider"></div>
-	        		<a class="dropdown-item" href="edit_profile.php"><b>Edit Profile</b></a>
-	        		<div class="dropdown-divider"></div>
-	        		<a class="dropdown-item" href="change_password.php"><b>Change Password</b></a>
-	        	</div>
-		      </li>
-		      <li class="nav-item">
-		        <a class="nav-link" href="../logout.php"style=color:red;><b>Logout</b></style></a>
-		      </li>
-		    </ul>
+	<!-- Navbar code here -->
+	<center><h4 style="color:blue;"><b>Return Book</b></h4><br></center>
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+			<form action="" method="post">
+				<div class="form-group">
+					<label for="book_name"><b>Book Name:</b></label>
+					<input type="text" id="book_name" name="book_name" class="form-control" onkeyup="getBookDetails()" required>
+				</div>
+				<div class="form-group">
+					<label for="book_author"><b>Author Name:</b></label>
+					<input type="text" id="book_author" name="book_author" class="form-control" readonly>
+				</div>
+				<div class="form-group">
+					<label for="isbn_no"><b>ISBN Number:</b></label>
+					<input type="number" id="isbn_no" name="isbn_no" class="form-control" readonly>
+				</div>
+				<div class="form-group">
+					<label for="user_id"><b>User ID:</b></label>
+					<input type="text" name="user_id" class="form-control" required>
+				</div>
+				<div class="form-group">
+					<label for="return_date"><b>Return Date:</b></label>
+					<input type="date" name="return_date" class="form-control" value="<?php echo date('Y-m-d'); ?>" required>
+				</div>
+				<button type="submit" name="return_book" class="btn btn-primary">Return Book</button>
+			</form>
 		</div>
-	</nav><br>
-	<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd">
-		<div class="container-fluid">
-			
-		    <ul class="nav navbar-nav navbar-center">
-		      <li class="nav-item">
-		        <a class="nav-link" href="admin_dashboard.php"><b>Dashboard</b></a>
-		      </li>
-		      <li class="nav-item dropdown">
-	        	<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>Books</b></a>
-	        	<div class="dropdown-menu">
-	        		<a class="dropdown-item" href="add_book.php"><b>Add New Book</b></a>
-	        		<div class="dropdown-divider"></div>
-	        		<a class="dropdown-item" href="manage_book.php"><b>Manage Books</b></a>
-	        	</div>
-		      </li>
-		      <li class="nav-item dropdown">
-	        	<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>Category</b></a>
-	        	<div class="dropdown-menu">
-	        		<a class="dropdown-item" href="add_cat.php"><b>Add New Category</b></a>
-	        		<div class="dropdown-divider"></div>
-	        		<a class="dropdown-item" href="manage_cat.php"><b>Manage Category</b></a>
-	        	</div>
-		      </li>
-		      <li class="nav-item dropdown">
-	        	<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>Authors</b></a>
-	        	<div class="dropdown-menu">
-	        		<a class="dropdown-item" href="add_author.php"><b>Add New Author</b></a>
-	        		<div class="dropdown-divider"></div>
-	        		<a class="dropdown-item" href="manage_author.php"><b>Manage Author</b></a>
-	        	</div>
-		      </li>
-			  <li class="nav-item dropdown">
-	        	<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>Staff </b></a>
-	        	<div class="dropdown-menu">
-	        		<a class="dropdown-item" href="add_staff.php"><b>Add New Member</b></a>
-	        		<div class="dropdown-divider"></div>
-	        		<a class="dropdown-item" href="manage_staff.php"><b>Manage Members</b></a>
-	        	</div>
-		      </li>
-			  <li class="nav-item">
-		        <a class="nav-link" href="issue_book.php"><b>Issue Book</b></a>
-		      </li>
-	          <li class="nav-item">
-		        <a class="nav-link" href="return_book.php"><b>Return Book</b></a>
-		      </li>
-		    </ul>
-		</div>
-	</nav><br>
-	<span><marquee><b>Library Management System|Brought to you by <span style=color:red;>Tech Alliance</style>.</b></marquee></span><br><br>
-		<center><h4 style=color:blue;><u>Return Book</u></style></h4><br></center>
-		<div class="row">
-			<div class="col-md-4"></div>
-			<div class="col-md-4">
-				<form action="" method="post">
-					<div class="form-group">
-						<label for="book_name"><b>Book Name:</b></label>
-						<input type="text" name="book_name" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label for="book_author"><b>Author Name:</b></label>
-						<select class="form-control" name="book_author">
-							<option>-Select author-</option>
-							<?php  
-								$connection = mysqli_connect("localhost","root","");
-								$db = mysqli_select_db($connection,"lms");
-								$query = "select author_name from authors";
-								$query_run = mysqli_query($connection,$query);
-								while($row = mysqli_fetch_assoc($query_run)){
-									?>
-									<option><?php echo $row['author_name'];?></option>
-									<?php
-								}
-							?>
-						</select>
-				
-					</div>
-					<div class="form-group">
-						<label for="book_no"><b>ISBN Number:</b></label>
-						<input type="text" name="isbn_no" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label for="user_id"><b>User ID:</b></label>
-						<input type="text" name="user_id" class="form-control" required>
-					</div>
-					<div class="form-group">
-						<label for="return_date"><b>Return Date:</b></label>
-						<input type="date" name="return_date" class="form-control" value="<?php echo date("yyyy-mm-dd");?>" required>
-					</div>
-					<button type="submit" name="return_book" class="btn btn-primary">Return Book</button>
-				</form>
-			</div>
-			<div class="col-md-4"></div>
-		</div>
+		<div class="col-md-4"></div>
+	</div>
 </body>
 </html>
 
 <?php
 	if(isset($_POST['return_book']))
 	{
-		$connection = mysqli_connect("localhost","root","");
-		$db = mysqli_select_db($connection,"lms");
-		$query = "insert into returned_books values(null,$_POST[isbn_no],'$_POST[book_name]','$_POST[book_author]',$_POST[user_id],1,'$_POST[return_date]')";
-		$query_run = mysqli_query($connection,$query);
+		$connection = mysqli_connect("localhost", "root", "");
+		$db = mysqli_select_db($connection, "lms");
 
-		if ($query_run) {
-			echo '<script>window.onload = function() { alert("Book Returned successfully..."); }</script>';
+		// Sanitize user input
+		$isbn_no = mysqli_real_escape_string($connection, $_POST['isbn_no']);
+		$book_name = mysqli_real_escape_string($connection, $_POST['book_name']);
+		$book_author = mysqli_real_escape_string($connection, $_POST['book_author']);
+		$user_id = mysqli_real_escape_string($connection, $_POST['user_id']);
+		$return_date = mysqli_real_escape_string($connection, $_POST['return_date']);
+
+		if(!empty($book_author)) {
+			$query = "INSERT INTO returned_books VALUES (null, '$isbn_no', '$book_name', '$book_author', '$user_id', 1, '$return_date')";
+			$query_run = mysqli_query($connection, $query);
+
+			if ($query_run) {
+				echo '<script>window.onload = function() { alert("Book Returned successfully..."); }</script>';
+			} else {
+				echo '<script>window.onload = function() { alert("Failed to Return Book"); }</script>';
+			}
 		} else {
-			echo '<script>window.onload = function() { alert("Failed to Return Book"); }</script>';
+			echo '<script>window.onload = function() { alert("Author name cannot be empty"); }</script>';
 		}
-	
 	}
 ?>

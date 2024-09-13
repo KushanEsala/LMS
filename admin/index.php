@@ -70,7 +70,6 @@
 		    </ul>
 		</div>
 	</nav><br>
-	<span><marquee><b>Library Management System|Brought to you by <span style=color:red;>Tech Alliance</style>.</b></marquee></span><br><br>
 	<div class="row">
 		<div class="col-md-4" id="side_bar">
 			<h5>Library Timing</h5>

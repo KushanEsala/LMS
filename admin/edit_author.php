@@ -47,7 +47,6 @@
 		    </ul>
 		</div>
 	</nav><br>
-	<span><marquee><b>Library Management System|Brought to you by <span style=color:red;>Tech Alliance</style>.</b></marquee></span><br><br>
 		<center><h4 style=color:blue;><b>Edit Author</b></style></h4><br></center>
 		<div class="row">
 			<div class="col-md-4"></div>

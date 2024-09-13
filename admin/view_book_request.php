@@ -1,11 +1,8 @@
 <?php
     require('functions.php');
     session_start();
-    // Fetch all book requests from the database
-    $connection = mysqli_connect("localhost","root","");
-	$db = mysqli_select_db($connection,"lms");
-    $query = "SELECT * FROM request_book";
-    $result = mysqli_query($connection, $query);
+
+    $connection = mysqli_connect("localhost", "root", "", "lms");
 
     if (isset($_GET['action']) && isset($_GET['id'])) {
         $request_id = $_GET['id'];
@@ -17,20 +14,64 @@
             declineRequest($request_id);
         }
         header("Location: view_book_request.php");
+        exit(); // Ensure no further code execution after redirect
     }
 
+    // Fetch all book requests from the database
     $query = "SELECT * FROM request_book";
     $result = mysqli_query($connection, $query);
-    
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>View Book Requests</title>
-    <meta charset="utf-8" name="viewport" content="width=device-width,intial-scale=1">
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="../bootstrap-4.4.1/css/bootstrap.min.css">
     <script type="text/javascript" src="../bootstrap-4.4.1/js/jquery_latest.js"></script>
     <script type="text/javascript" src="../bootstrap-4.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			background-color: #f8f9fa;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+			overflow: hidden;
+		}
+		th {
+			background-color: #6c757d;
+			color: white;
+			font-weight: bold;
+			padding: 10px;
+			text-align: left;
+			border-bottom: 2px solid #dee2e6;
+		}
+		td {
+			padding: 10px;
+			border-bottom: 1px solid #dee2e6;
+		}
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+		tr:hover {
+			background-color: #e9ecef;
+		}
+		thead {
+			background-color: #5d78ff;
+			color: white;
+		}
+		td a {
+			text-decoration: none;
+			color: white;
+		}
+		.btn-warning a {
+			color: black;
+		}
+		thead th {
+			background-color: #4a73ff;
+		}
+	</style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -59,7 +100,7 @@
         </div>
     </nav><br>
     <div class="container">
-        <h2>Book Requests</h2>
+        <center><h4 style=color:blue;><b>Book Requests</b></style></h4><br></center>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -73,17 +114,27 @@
             </thead>
             <tbody>
                 <?php
-                    while($row = mysqli_fetch_assoc($result)) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $status = $row['status'];
+                        $requestId = $row['rb_id'];
+                        
+                        // Determine if the buttons should be enabled or disabled
+                        $acceptButtonClass = $status == 0 ? 'btn btn-success' : 'btn btn-success disabled';
+                        $declineButtonClass = $status == 0 ? 'btn btn-danger' : 'btn btn-danger disabled';
+                        
+                        // Determine if buttons should be clickable
+                        $acceptButtonDisabled = $status != 0 ? 'disabled' : '';
+                        $declineButtonDisabled = $status != 0 ? 'disabled' : '';
+
                         echo "<tr>";
-                        echo "<td>".$row['rb_id']."</td>";
-                        echo "<td>".$row['user_id']."</td>";
-                        echo "<td>".$row['user_name']."</td>";
-                        echo "<td>".$row['request_date']."</td>";
-                        echo "<td>".$row['book_name']."</td>";
-                        echo "<td>".$row['status']."</td>";
+                        echo "<td>" . $requestId . "</td>";
+                        echo "<td>" . $row['book_name'] . "</td>";
+                        echo "<td>" . $row['user_name'] . "</td>";
+                        echo "<td>" . $row['request_date'] . "</td>";
+                        echo "<td>" . ($status == 0 ? 'Pending' : ($status == 1 ? 'Accepted' : 'Declined')) . "</td>";
                         echo "<td>
-                                <a href='view_book_request.php?action=accept&id=".$row['rb_id']."' class='btn btn-success'>Accept</a>
-                                <a href='view_book_request.php?action=decline&id=".$row['rb_id']."' class='btn btn-danger'>Decline</a>
+                                <a href='view_book_request.php?action=accept&id=" . $requestId . "' class='$acceptButtonClass' $acceptButtonDisabled>Accept</a>
+                                <a href='view_book_request.php?action=decline&id=" . $requestId . "' class='$declineButtonClass' $declineButtonDisabled>Decline</a>
                               </td>";
                         echo "</tr>";
                     }

@@ -10,6 +10,49 @@
 	<link rel="stylesheet" type="text/css" href="../bootstrap-4.4.1/css/bootstrap.min.css">
   	<script type="text/javascript" src="../bootstrap-4.4.1/js/juqery_latest.js"></script>
   	<script type="text/javascript" src="../bootstrap-4.4.1/js/bootstrap.min.js"></script>
+
+      <style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			background-color: #f8f9fa;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+			overflow: hidden;
+		}
+		th {
+			background-color: #6c757d;
+			color: white;
+			font-weight: bold;
+			padding: 10px;
+			text-align: left;
+			border-bottom: 2px solid #dee2e6;
+		}
+		td {
+			padding: 10px;
+			border-bottom: 1px solid #dee2e6;
+		}
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+		tr:hover {
+			background-color: #e9ecef;
+		}
+		thead {
+			background-color: #5d78ff;
+			color: white;
+		}
+		td a {
+			text-decoration: none;
+			color: white;
+		}
+		.btn-warning a {
+			color: black;
+		}
+		thead th {
+			background-color: #4a73ff;
+		}
+	</style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -36,11 +79,9 @@
 		    </ul>
 		</div>
 	</nav>
-    <a href="admin_dashboard.php" class="btn btn-light" style="border: 2px solid black;"><b>Back</b></a>
     <br>
-    <span><marquee><b>Library Management System|Brought to you by <span style=color:red;>Tech Alliance</style>.</b></marquee></span><br><br>
     <div class="container">
-        <center><h2 style=color:blue><u>Staff Members</u></style></h2></center><br>
+        <center><h2 style=color:blue><b>Staff Members</b></style></h2></center><br>
         <table class="table table-bordered">
             <thead>
                 <tr>

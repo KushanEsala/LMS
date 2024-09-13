@@ -25,19 +25,48 @@
   	<script type="text/javascript" src="../bootstrap-4.4.1/js/bootstrap.min.js"></script>
   	<script type="text/javascript">
   		function alertMsg(){
-  			alert(Staff added successfully...);
+  			alert('Staff added successfully...');
   			window.location.href = "admin_dashboard.php";
   		}
   	</script>
+	<style>
+		/* Custom table header style */
+		thead {
+			background-color: #3366ff;
+			color: white;
+		}
+		
+		/* Custom action buttons */
+		.btn-edit {
+			background-color: #ffcc00;
+			color: black;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+		}
+
+		.btn-delete {
+			background-color: #ff3333;
+			color: white;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+		}
+
+		/* Add hover effect for buttons */
+		.btn-edit:hover, .btn-delete:hover {
+			opacity: 0.8;
+		}
+	</style>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="admin_dashboard.php"style=color:yellow;>Library Management System (LMS)</style></a>
+				<a class="navbar-brand" href="admin_dashboard.php" style="color:yellow;">Library Management System (LMS)</a>
 			</div>
 			<font style="color: white"><span><strong>Welcome: <?php echo $_SESSION['name'];?></strong></span></font>
-			<font style="color: white"><span><strong>Email: <?php echo $_SESSION['email'];?></strong></font>
+			<font style="color: white"><span><strong>Email: <?php echo $_SESSION['email'];?></strong></span></font>
 		    <ul class="nav navbar-nav navbar-right">
 		      <li class="nav-item dropdown">
 	        	<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>My Profile</b></a>
@@ -50,14 +79,13 @@
 	        	</div>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="../logout.php"style=color:red;><b>Logout</b></style></a>
+		        <a class="nav-link" href="../logout.php" style="color:red;"><b>Logout</b></a>
 		      </li>
 		    </ul>
 		</div>
 	</nav><br>
 	<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd">
 		<div class="container-fluid">
-			
 		    <ul class="nav navbar-nav navbar-center">
 		      <li class="nav-item">
 		        <a class="nav-link" href="admin_dashboard.php"><b>Dashboard</b></a>
@@ -103,23 +131,23 @@
 		    </ul>
 		</div>
 	</nav><br>
-	<span><marquee><b>Library Management System|Brought to you by <span style=color:red;>Tech Alliance</style>.</b></marquee></span><br><br>
-		<center><h4 style=color:blue;><u>Manage Staff Members</u></style></h4><br></center>
-		<div class="row">
-			<div class="col-md-2"></div>
-			<div class="col-md-12">
-				<table class="table table-bordered table-hover">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Email</th>
-							<th>Mobile</th>
-							<th>Address</th>
-							<th>Job Role</th>
-							<th>Salary</th>
-                            <th>Action</th>
-						</tr>
-					</thead>
+	<center><h4 style="color:blue;"><b>Manage Staff Members</b></h4><br></center>
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-12">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Mobile</th>
+						<th>Address</th>
+						<th>Job Role</th>
+						<th>Salary</th>
+                        <th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
 					<?php
 						$connection = mysqli_connect("localhost","root","");
 						$db = mysqli_select_db($connection,"lms");
@@ -134,15 +162,18 @@
 								<td><?php echo $row['address'];?></td>
 								<td><?php echo $row['job_role'];?></td>
 								<td><?php echo $row['salary'];?></td>
-								<td><button class="btn btn-warning" name=""><a href="edit_staff.php?bn=<?php echo $row['s_id'];?>"style=color:black;>Edit</a></button>
-								<button class="btn btn-danger"><a href="delete_staff.php?bn=<?php echo $row['s_id'];?>"style=color:white;>Delete</a></button></td>
+								<td>
+									<button class="btn btn-edit"><a href="edit_staff.php?bn=<?php echo $row['s_id'];?>" style="color:black;">Edit</a></button>
+									<button class="btn btn-delete"><a href="delete_staff.php?bn=<?php echo $row['s_id'];?>" style="color:white;">Delete</a></button>
+								</td>
 							</tr>
 							<?php
 						}
 					?>
-				</table>
-			</div>
-			<div class="col-md-2"></div>
+				</tbody>
+			</table>
 		</div>
+		<div class="col-md-2"></div>
+	</div>
 </body>
 </html>

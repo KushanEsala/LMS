@@ -1,14 +1,16 @@
 <?php
 	session_start();
-	#fetch data from database
-	$connection = mysqli_connect("localhost","root","");
-	$db = mysqli_select_db($connection,"lms");
-	$book_name = "";
-	$author = "";
-	$book_no = "";
-	$user_name = "";
-	$query = "select issued_books.book_name,issued_books.book_author,issued_books.isbn_no,issue_date,users.name from issued_books left join users on issued_books.user_id = users.id where issued_books.status = 1";
+	$connection = mysqli_connect("localhost", "root", "");
+	$db = mysqli_select_db($connection, "lms");
+
+	// Fetch issued books with necessary details
+	$query = "SELECT issued_books.book_name, issued_books.book_author, issued_books.isbn_no, issued_books.issue_date, users.name AS user_name 
+	          FROM issued_books 
+	          LEFT JOIN users ON issued_books.user_id = users.id 
+	          WHERE issued_books.status = 1";
+			  
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,68 +19,110 @@
 	<link rel="stylesheet" type="text/css" href="../bootstrap-4.4.1/css/bootstrap.min.css">
   	<script type="text/javascript" src="../bootstrap-4.4.1/js/juqery_latest.js"></script>
   	<script type="text/javascript" src="../bootstrap-4.4.1/js/bootstrap.min.js"></script>
+	<style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			background-color: #f8f9fa;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+			overflow: hidden;
+		}
+		th {
+			background-color: #6c757d;
+			color: white;
+			font-weight: bold;
+			padding: 10px;
+			text-align: left;
+			border-bottom: 2px solid #dee2e6;
+		}
+		td {
+			padding: 10px;
+			border-bottom: 1px solid #dee2e6;
+		}
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+		tr:hover {
+			background-color: #e9ecef;
+		}
+		thead {
+			background-color: #5d78ff;
+			color: white;
+		}
+		td a {
+			text-decoration: none;
+			color: white;
+		}
+		.btn-warning a {
+			color: black;
+		}
+		thead th {
+			background-color: #4a73ff;
+		}
+	</style>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="admin_dashboard.php"style=color:yellow;>Library Management System (LMS)</style></a>
+				<a class="navbar-brand" href="admin_dashboard.php" style="color:yellow;">Library Management System (LMS)</a>
 			</div>
-			<font style="color: white"><span><strong>Welcome: <?php echo $_SESSION['name'];?></strong></span></font>
-			<font style="color: white"><span><strong>Email: <?php echo $_SESSION['email'];?></strong></font>
-		    <ul class="nav navbar-nav navbar-right">
-		      <li class="nav-item dropdown">
-	        	<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>My Profile</b></a>
-	        	<div class="dropdown-menu">
-	        		<a class="dropdown-item" href="view_profile.php"><b>View Profile</b></a>
-	        		<div class="dropdown-divider"></div>
-	        		<a class="dropdown-item" href="edit_profile.php"><b>Edit Profile</b></a>
-	        		<div class="dropdown-divider"></div>
-	        		<a class="dropdown-item" href="change_password.php"><b>Change Password</b></a>
-	        	</div>
-		      </li>
-		      <li class="nav-item">
-		        <a class="nav-link" href="../logout.php"style=color:red;><b>Logout</b></style></a>
-		      </li>
-		    </ul>
+			<font style="color: white">
+				<span><strong>Welcome: <?php echo $_SESSION['name'];?></strong></span>
+				<span><strong>Email: <?php echo $_SESSION['email'];?></strong></span>
+			</font>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown"><b>My Profile</b></a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="view_profile.php"><b>View Profile</b></a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="edit_profile.php"><b>Edit Profile</b></a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="change_password.php"><b>Change Password</b></a>
+					</div>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="../logout.php" style="color:red;"><b>Logout</b></a>
+				</li>
+			</ul>
 		</div>
 	</nav>
-	<a href="admin_dashboard.php" class="btn btn-light" style="border: 2px solid black;"><b>Back</b></a>
 	<br>
-	<span><marquee><b>Library Management System|Brought to you by <span style=color:red;>Tech Alliance</style>.</b></marquee></span><br><br>
-		<center><h4 style=color:blue;><u>Issued Book's Detail</u></style></h4><br></center>
-		<div class="row">
-			<div class="col-md-2"></div>
-			<div class="col-md-8">
-				<form>
-					<table class="table-bordered" width="900px" style="text-align: center">
-						<tr>
-							<th>Name</th>
-							<th>Author</th>
-							<th>ISBN Number</th>
-							<th>User Name</th>
-							<th>Issue Date</th>
-						</tr>
-				
+	<center>
+		<h4 style="color:blue;"><b>Issued Book's Details</b></h4><br>
+	</center>
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<form>
+				<table class="table-bordered" width="900px" style="text-align: center">
+					<tr>
+						<th>Book Name</th>
+						<th>Author</th>
+						<th>ISBN Number</th>
+						<th>User Name</th>
+						<th>Issue Date</th>
+					</tr>
 					<?php
-						$query_run = mysqli_query($connection,$query);
-						while ($row = mysqli_fetch_assoc($query_run)){
+						$query_run = mysqli_query($connection, $query);
+						while ($row = mysqli_fetch_assoc($query_run)) {
 							?>
 							<tr>
-							<td><?php echo $row['book_name'];?></td>
-							<td><?php echo $row['book_author'];?></td>
-							<td><?php echo $row['isbn_no'];?></td>
-							<td><?php echo $row['name'];?></td>
-							<td><?php echo $row['issue_date'];?></td>
-						</tr>
-
-					<?php
+								<td><?php echo $row['book_name']; ?></td>
+								<td><?php echo $row['book_author']; ?></td>
+								<td><?php echo $row['isbn_no']; ?></td>
+								<td><?php echo $row['user_name']; ?></td>
+								<td><?php echo $row['issue_date']; ?></td>
+							</tr>
+							<?php
 						}
-					?>	
+					?>
 				</table>
-				</form>
-			</div>
-			<div class="col-md-2"></div>
+			</form>
 		</div>
+		<div class="col-md-2"></div>
+	</div>
 </body>
 </html>

@@ -3,8 +3,17 @@
 	#fetch data from database
 	$connection = mysqli_connect("localhost","root","");
 	$db = mysqli_select_db($connection,"lms");
-	$query = "select * from Authors";
 	$author_name = "";
+
+	// Default query
+	$query = "SELECT * FROM Authors";
+
+	// Search functionality
+	if(isset($_GET['search']) && !empty($_GET['search'])) {
+		$search = $_GET['search'];
+		// Modify query to include search criteria
+		$query .= " WHERE author_name LIKE '%$search%'";
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,6 +23,49 @@
 	<link rel="stylesheet" type="text/css" href="../bootstrap-4.4.1/css/bootstrap.min.css">
   	<script type="text/javascript" src="../bootstrap-4.4.1/js/juqery_latest.js"></script>
   	<script type="text/javascript" src="../bootstrap-4.4.1/js/bootstrap.min.js"></script>
+
+	  <style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			background-color: #f8f9fa;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+			overflow: hidden;
+		}
+		th {
+			background-color: #6c757d;
+			color: white;
+			font-weight: bold;
+			padding: 10px;
+			text-align: left;
+			border-bottom: 2px solid #dee2e6;
+		}
+		td {
+			padding: 10px;
+			border-bottom: 1px solid #dee2e6;
+		}
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+		tr:hover {
+			background-color: #e9ecef;
+		}
+		thead {
+			background-color: #5d78ff;
+			color: white;
+		}
+		td a {
+			text-decoration: none;
+			color: white;
+		}
+		.btn-warning a {
+			color: black;
+		}
+		thead th {
+			background-color: #4a73ff;
+		}
+	</style>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -40,10 +92,26 @@
 		    </ul>
 		</div>
 	</nav>
-	<a href="admin_dashboard.php" class="btn btn-light" style="border: 2px solid black;"><b>Back</b></a>
+	<!-- Search Form -->
+	<div class="container-fluid">
+	    <div class="row">
+	        <div class="col-md-3">
+	            <form method="GET" action="">
+	                <div class="input-group mt-3">
+	                    <input type="text" class="form-control" name="search" placeholder="Search Author">
+	                    <div class="input-group-append">
+	                        <button class="btn btn-dark" type="submit">Search</button>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	        <div class="col-md-9">
+	            <!-- Search results table -->
+	        </div>
+	    </div>
+	</div>
 	<br>
-	<span><marquee><b>Library Management System|Brought to you by <span style=color:red;>Tech Alliance</style>.</b></marquee></span><br><br>
-		<center><h4 style=color:blue;><u>Registered Authors</u></h4><br></center>
+		<center><h4 style=color:blue;><b>Registered Authors</b></h4><br></center>
 		<div class="row">
 			<div class="col-md-2"></div>
 			<div class="col-md-8">
